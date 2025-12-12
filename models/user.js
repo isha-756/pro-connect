@@ -1,14 +1,27 @@
-// models/User.js
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-  name: { type: String, required: true, trim: true },
-  email: { type: String, required: true, unique: true, lowercase: true, trim: true },
-  password: { type: String, required: true }, // hashed password
-  phone: { type: String, required: true, trim: true },
-  province: { type: String, required: true, trim: true },
-  city: { type: String, required: true, trim: true },
-  createdAt: { type: Date, default: Date.now },
+  fullName: { type: String, required: true },
+
+  email: { type: String, required: true, unique: true },
+
+  phone: { type: String, required: true },
+
+  profilePhoto: { type: String },   // URL or Base64
+
+  password: { type: String, required: true },
+
+  province: { type: String, required: true },
+
+  municipality: { type: String, required: true },
+
+  district: { type: String, required: true },
+
+  wardNo: { type: String, required: true },
+
+  otp: { type: String },
+
+  isVerified: { type: Boolean, default: false }
 });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model("User", userSchema);

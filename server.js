@@ -1,26 +1,31 @@
 // server.js
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const connectDB = require('./config/db');
-
+const express = require("express");
 const app = express();
-const PORT = process.env.PORT || 5000;
+const cors = require("cors");
+const dotenv = require("dotenv");
+dotenv.config();
 
-// connect DB
+const connectDB = require("./config/db");
+const authRoutes = require("./routes/auth");
+const ratingRoutes = require("./routes/rating"); // Rating & Review routes
+
+// Connect to MongoDB
 connectDB();
 
-// middlewares
-app.use(cors()); // allow cross-origin calls (configure origins in production)
-app.use(express.json());
+// Middleware
+app.use(cors());
+app.use(express.json({ limit: "10mb" })); // allows profilePhoto as Base64
 
-// routes
-app.use('/api/auth', require('./routes/auth'));
+// Routes
+app.use("/api/auth", authRoutes);       // Auth routes
+app.use("/api/rating", ratingRoutes);   // Rating & Review routes
 
-// example protected test route
-const auth = require('./middleware/auth');
-app.get('/api/protected', auth, (req, res) => {
-  res.json({ message: `Hello ${req.user.id}, this is protected`, user: req.user });
+// Test route
+app.get("/", (req, res) => {
+    res.send("Pro-Connect API Running...");
 });
 
+// Start server
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
