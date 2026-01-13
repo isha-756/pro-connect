@@ -1,27 +1,83 @@
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema({
-  fullName: { type: String, required: true },
+const userSchema = new mongoose.Schema(
+  {
+    "Full Name": {
+      type: String,
+      required: true,
+      trim: true
+    },
 
-  email: { type: String, required: true, unique: true },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true
+    },
 
-  phone: { type: String, required: true },
+    phone: {
+      type: String,
+      required: true
+    },
 
-  profilePhoto: { type: String },   // URL or Base64
+    password: {
+      type: String,
+      required: true
+    },
 
-  password: { type: String, required: true },
+    "Profile Photo": {
+      type: String // URL or Base64
+    },
 
-  province: { type: String, required: true },
+    role: {
+      type: String,
+      enum: ["customer", "provider"],
+      default: "customer"
+    },
 
-  municipality: { type: String, required: true },
+    // ✅ REQUIRED FOR SERVICE MATCHING (PROVIDER)
+    serviceType: {
+      type: String,
+      default: null
+    },
 
-  district: { type: String, required: true },
+    // ✅ GEO LOCATION (USED BY REQUEST & DISTANCE)
+    location: {
+      type: {
+        type: String,
+        enum: ["Point"],
+        default: "Point"
+      },
+      coordinates: {
+        type: [Number], // [longitude, latitude]
+        default: [0, 0]
+      }
+    },
 
-  wardNo: { type: String, required: true },
+    isOnline: {
+      type: Boolean,
+      default: false
+    },
 
-  otp: { type: String },
+    socketId: {
+      type: String,
+      default: null
+    },
 
-  isVerified: { type: Boolean, default: false }
-});
+    otp: {
+      type: String,
+      default: null
+    },
+
+    isVerified: {
+      type: Boolean,
+      default: false
+    }
+  },
+  { timestamps: true }
+);
+
+// ✅ REQUIRED FOR GEO QUERIES
+userSchema.index({ location: "2dsphere" });
 
 module.exports = mongoose.model("User", userSchema);
