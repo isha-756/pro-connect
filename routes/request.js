@@ -139,6 +139,7 @@ router.post("/complete/:requestId", async (req, res) => {
       provider: request.provider,
       serviceType: request.serviceType,
       customerLocation: request.customerLocation,
+      completedAt: new Date(),
       completedBy: "customer"
     });
 

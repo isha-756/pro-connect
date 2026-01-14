@@ -4,24 +4,41 @@ const serviceTakenSchema = new mongoose.Schema(
   {
     customer: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User"
+      ref: "User",
+      required: true
     },
 
     provider: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User"
+      ref: "User",
+      required: true
     },
 
-    serviceType: String,
+    serviceType: {
+      type: String,
+      required: true
+    },
 
     customerLocation: {
-      lat: Number,
-      lng: Number
+      lat: {
+        type: Number,
+        required: true
+      },
+      lng: {
+        type: Number,
+        required: true
+      }
     },
 
     completedBy: {
       type: String,
-      enum: ["customer", "provider"]
+      enum: ["customer", "provider"],
+      required: true
+    },
+
+    completedAt: {
+      type: Date,
+      default: Date.now
     }
   },
   { timestamps: true }

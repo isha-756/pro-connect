@@ -21,13 +21,24 @@ const serviceRequestSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: ["pending", "accepted", "rejected"],
+      enum: [
+        "pending",      // request sent
+        "accepted",     // provider accepted
+        "in_progress",  // service started
+        "rejected"      // provider rejected
+      ],
       default: "pending"
     },
 
     customerLocation: {
-      lat: Number,
-      lng: Number
+      lat: {
+        type: Number,
+        required: true
+      },
+      lng: {
+        type: Number,
+        required: true
+      }
     }
   },
   { timestamps: true }
